@@ -17,7 +17,7 @@ namespace ORM_Dapper
             string connectionString = config.GetConnectionString("DefaultConnection");
             IDbConnection connection = new MySqlConnection(connectionString);
 
-            var repo = new DepartmentRepository(connection);
+            var repo = new DapperDepartmentRepository(connection);
 
             Console.WriteLine("Do you want to add a new department?");
 
@@ -69,6 +69,46 @@ namespace ORM_Dapper
             {
                 Console.WriteLine(department.Name);
             }
+
+            var productRepo = new DapperProductRepository(connection);
+
+            Console.WriteLine("Do you want to add a new product?");
+
+            var addProduct = Console.ReadLine();
+
+            while (addProduct == "yes")
+            {
+                Console.WriteLine("Type a new product name");
+
+                var newProductName = Console.ReadLine();
+
+                Console.WriteLine("Set a price (decimal)");
+
+                var newProductPrice = double.Parse(Console.ReadLine());
+
+                Console.WriteLine("Set a Category ID (integer)");
+
+                var newProductCategoryID = int.Parse(Console.ReadLine());
+
+                productRepo.CreateProduct(newProductName, newProductPrice, newProductCategoryID);
+
+                Console.WriteLine($"product with name {newProductName}, price {newProductPrice}, and Category ID {newProductCategoryID} added. \n Would you like to add another?");
+
+                var answer = Console.ReadLine();
+
+                addProduct = answer;
+            }
+
+            Console.WriteLine("Would you like to see a list of all products?");
+
+            var listProducts = Console.ReadLine();
+
+            if (listProducts == "yes")
+            {
+                var products = productRepo.GetAllProducts();
+                foreach (var product in products) { Console.WriteLine(product.Name); }
+            }
+            Console.WriteLine("Thank you for using our dapper database management system, goodbye.");
         }
     }
 }

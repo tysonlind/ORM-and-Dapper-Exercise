@@ -8,11 +8,11 @@ using Dapper;
 
 namespace ORM_Dapper
 {
-    internal class DepartmentRepository : IDepartmentRepository
+    internal class DapperDepartmentRepository : IDepartmentRepository
     {
         private readonly IDbConnection _connection;
         //Constructor
-        public DepartmentRepository(IDbConnection connection)
+        public DapperDepartmentRepository(IDbConnection connection)
         {
             _connection = connection;
         }
